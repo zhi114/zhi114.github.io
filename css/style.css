@@ -854,6 +854,14 @@ a {
 .body-wrap {
   margin-bottom: 80px;
 }
+.duoshuo_box {
+  margin: 30 dp;
+  position: relative;
+  border: 1px solid #ddd;
+  background: #fff;
+  -webkit-transition: all 0.2s ease-in;
+}
+.,
 .article {
   margin: 30px;
   position: relative;
@@ -861,6 +869,7 @@ a {
   background: #fff;
   -webkit-transition: all 0.2s ease-in;
 }
+..show,
 .article.show {
   visibility: visible;
   -webkit-animation: cd-bounce-1 0.6s;
@@ -870,9 +879,11 @@ a {
   -ms-animation: cd-bounce-1 0.6s;
   animation: cd-bounce-1 0.6s;
 }
+..hidden,
 .article.hidden {
   visibility: hidden;
 }
+. img,
 .article img {
   max-width: 100%;
 }
