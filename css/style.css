@@ -885,7 +885,7 @@ a {
 }
 . img,
 .article img {
-  max-width: 100%;
+  width: 100%;
 }
 @-webkit-keyframes cd-bounce-1 {
   0% {
