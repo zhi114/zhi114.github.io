@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/zhi114/zhi114.github.io/master/img/zombies.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/zhi114/zhi114.github.io/master/img/zombie_message.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/zhi114/zhi114.github.io/master/img/zombies_code.png">
-<meta property="og:updated_time" content="2016-03-18T09:36:04.000Z">
+<meta property="og:updated_time" content="2016-03-18T09:37:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS解决exc_bad_access">
 <meta name="twitter:description" content="下午在使用NJKWebViewProgress的时候，遇到了exc_bad_access错误。于是找了下怎么debug exc_bad_access错误的方法，以免遗忘。
@@ -186,7 +186,8 @@
 <p>报错的图片：<br><img src="https://raw.githubusercontent.com/zhi114/zhi114.github.io/master/img/error_exec_bad_access.png" width="300" height="200" alt="zombies"></p>
 <p>就是一个加载网页的webview，NJKWebViewProgress的使用也与官方基本一致。</p>
 <p>解决步骤：<br>1.Edit Schema —&gt; Run —&gt; Diagnostics<br>  选中Enable Zombie Objects<br>  然后再运行项目。<br>  这时重现bug，console会出现错误log：<br>  <strong>[NJKWebViewProgress respondsToSelector:]: message sent to deallocated instance 0x15ecb5ad0</strong><br>  通过log得知，因为我向已经被回收的NJKWebViewProgress对象发送消息，从而使程序崩溃。<br>  这句话并没有定位到具体的错误代码，我也没有看出来NJKWebViewProgress怎么就被回收了。所以继续第二步。</p>
-<p>2.在xcode项目，使用快捷键command+i,打开instruments，然后再选择Zombies.重复会导致bug的操作，这时在instruments的中间会弹出一个提示框。<br><img src="https://raw.githubusercontent.com/zhi114/zhi114.github.io/master/img/zombies.png" style="display:block;width:50%;align:center" alt="zombies"><br>点击右侧的箭头，可以看到打开instruments下部分会有NJKWebViewProgress对象引用和释放的纪录。<br><img src="https://raw.githubusercontent.com/zhi114/zhi114.github.io/master/img/zombie_message.png" style="display:block;width:100%;align:center" alt="zombies"><br>这里可以看到在错误发生在[UIVebView webView:decodePolicyForNavigationAction]这个语句里。</p>
+<p>2.在xcode项目，使用快捷键command+i,打开instruments，然后再选择Zombies.重复会导致bug的操作，这时在instruments的中间会弹出一个提示框。</p>
+<p><div><br><img src="https://raw.githubusercontent.com/zhi114/zhi114.github.io/master/img/zombies.png" style="display:block;width:50%;align:center" alt="zombies"><br></div><br>点击右侧的箭头，可以看到打开instruments下部分会有NJKWebViewProgress对象引用和释放的纪录。<br><img src="https://raw.githubusercontent.com/zhi114/zhi114.github.io/master/img/zombie_message.png" style="display:block;width:100%;align:center" alt="zombies"><br>这里可以看到在错误发生在[UIVebView webView:decodePolicyForNavigationAction]这个语句里。</p>
 <p>但真正引起我好奇的是，在viewDidLoad里，NJKWebViewProgress对象怎么就被释放了。双击[WebViewController viewDidLoad]，会进入到xcode里对应的代码。<br><img src="https://raw.githubusercontent.com/zhi114/zhi114.github.io/master/img/zombies_code.png" style="display:block;width:100%;align:center" alt="zombies"><br>如图所示，viewDidLoad执行完之后，_progressProxy对象就被释放了。<br>看了代码发现，NJKWebViewProgress的webViewProxyDelegate和progressDelegate属性都是weak类型的，viewDidLoad方法执行后，_progressProxy自然就被释放了。</p>
 <p>3.解决方法，把NJKWebViewProgress对象设为成员即可。</p>
 <p>总结：有了instruments，再也不怕遇到exec_bad_access错误了。淡然instruments还有很多作用，比如代码性能的检测，UI绘图的效率等。抽时间一定要掌握instruments！</p>
