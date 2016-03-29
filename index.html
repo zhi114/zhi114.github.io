@@ -138,6 +138,82 @@
 
       <div class="body-wrap">
   
+    <article id="post-iOS命名规范（－）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/29/iOS命名规范（－）/" class="article-date">
+  	<time datetime="2016-03-29T05:48:16.000Z" itemprop="datePublished">2016-03-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/29/iOS命名规范（－）/">iOS命名规范（－）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>译自：[<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingBasics.html#//apple_ref/doc/uid/20001281-BBCHBFAH][1" target="_blank" rel="external">https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingBasics.html#//apple_ref/doc/uid/20001281-BBCHBFAH][1</a>]</p>
+<p>##基本原则：</p>
+<ul>
+<li><p>一个好的命名应该简明扼要。简洁的命名和单词的长度并不冲突,即使单词很长，也要尽量拼写完整<br>| 命名        |      |<br>| ——–   | —–:  |<br>| insertObject:atIndex:     | 好的命名 |<br>| insert:at:        |   不好的命名,insert和at的含义太含糊   |</p>
+</li>
+<li><p>尽量不要缩写，即使单词很长<br>| 命名        |      |<br>| ——–   | —–:  |<br>| destinationSelection     | 好的命名 |<br>| destSel                  | 含义不够清楚 |</p>
+</li>
+<li>然而一些计算机术语的单词缩写，我们可以直接使用<br>| 缩写        |  意义    |<br>| ——–   | —–:  |<br>| alloc     | Allocate |<br>| alt                  | Alternate |<br>| app               | application |<br>| calc              | Calculate |<br>| dealloc           | Deallocate |<br>| msg               | Message    |</li>
+<li>API方法的名字需要语义明确，不然会被别人错误的理解成其他意思，尤其是在不同的国家和文化里。<br>| 代码        |  描述    |<br>| ——–   | —–:  |<br>| displayName    |  不够明确，它即可被理解成表示用户名的文本又可被理解成界面里显示用户名的文本控件 |<br>##Consistency<br>相同作用的方法的命名应该保持一致性；<br>| 代码        |  描述    |<br>| ——–   | —–:  |<br>| - (NSInteger)tag     |  在NSView, NSCell, NSControl中皆有声明 |<br>| - (void)setStringValue:(NSString *) | 在很多Cocoa的类中都有这个方法 |</li>
+</ul>
+<p>##不要自我解释<br>| 代码        |  描述    |<br>| ——–   | —–:  |<br>| NSString     |  好的命名 |<br>| NSStringObject | 自我解释，NSString已经可以表示一个字符串对象，再加上object有些画蛇添足 |</p>
+<p>但一些宏，按位操作的常量是个例外。<br>| 代码        |  描述    |<br>| ——–   | —–:  |<br>| NSUnderlineByWordMask     |  Okay |<br>| NSTableViewColumnDidMoveNotification | Okay |</p>
+<p>##Prefix(前缀)<br>prefix在命名中是非常重要的一部分。它可以区分软件中不同的功能块，比如实现了一个功能模块的类库经常打包成一个framework。使用前缀可以避免第三方开发的类和苹果自己的类发生冲突。<br>前缀有固定的格式，一般由两三个大写的字母组成。比如Foundation使用”NS”作为前缀，AFNetworking使用”AF”作为前缀。<br>前缀用在命名类，协议，函数（c），常量和typedef结构体。而方法和变量无需添加前缀。</p>
+<p>##书写约定<br>当一个方法由多个单词组成时，不要使用逗号等符号作为单词之间的分隔符。应使用骆驼命名法，即首个单词首字母小些，其他的单词首字母大些，例：fileExistsAtPath:isDirectory:<br>对于函数（c）和常量的名字，使用和类相同的前缀，并利用类中第一个单词，例：NSRunAlertPanel，NSCellDisabled</p>
+<p>##类和协议的命名<br>类的名字中需包含一个用来说明这个类的作用的名字。比如：UIButton,UILabel,NSString.<br>协议应该根据它如何管理自己的行为来去命名：</p>
+<ul>
+<li>协议中的方法作用和具体的类无关。这样的协议命名应该和类名有明显的区别，避免让使用者误认为它是一个类。<br>| 代码        |  描述    |<br>| ——–   | —–:  |<br>| NSUnderlineByWordMask     |  Okay |</li>
+<li>一些协议里有一些不相干的方法。这些协议一般是和一个类强相关的，这个类就是协议的实现者。这时，我们会把协议的名字设成和类的一致。比如NSObject协议。</li>
+</ul>
+<p>##头文件</p>
+<ul>
+<li>声明一个单独的类或者协议。如果这个类或者协议并不是一个功能组的一部分，则将类或协议的声明放到一个单独的文件中，文件的名字即为该类或协议的名字。<br>| 头文件        |  声明    |<br>| ——–   | —–:  |<br>| NSLocale.h     |  NSLocale类 |</li>
+<li>当声明一组功能相关的类，协议或者拓展时，将这些声明到一个文件当中，文件的名字为承载主要功能的类，协议，拓展的名字。<br>| 头文件        |  声明    |<br>| ——–   | —–:  |<br>| NSString.h     |  声明了NSString和NSMutableString类 |</li>
+<li>包涵framework的header files。每一个framework都应该包涵一个头文件，名字和framework的名字一样，里面包含了该framework里所有的头文件。<br>| 头文件        |  framework    |<br>| ——–   | —–:  |<br>| Foundation.h     | Foundation.framework |</li>
+<li>给别的frameowork的类添加api。如果你给别的framework的拓展类继续添加方法，那在给这个拓展命名时，需要在最原始的那个类的后面添加Additions。比如：NSBundleAdditions.h</li>
+</ul>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+<div id="duoshuo_box">
+      
+</div>
+
+
+
+  
     <article id="post-iOS解决exc-bad-access" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
